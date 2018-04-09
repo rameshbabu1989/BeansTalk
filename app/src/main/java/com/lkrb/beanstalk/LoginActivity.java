@@ -37,8 +37,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -69,18 +72,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
     private UserLoginTask mCurrentAuth = new UserLoginTask();
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
+
+    private static String FORM_LOGIN = "LOGIN";
+    private static String FORM_REGISTRATION = "REGISTRATION";
+    private static String FORM_FORGOT = "FORGOT";
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
-    private View mLoginFormView;
+    private View mFormView;
+    private View mLoginForm;
+    private View mRegistrationForm;
+    private View mForgotForm;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         mCurrentAuth.checkUserSession();
         setContentView(R.layout.activity_login);
 
@@ -108,8 +123,37 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
+        Button mEmailSignUpButton = (Button) findViewById(R.id.email_sign_up_button);
+        mEmailSignUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuthTask.signUp();
+            }
+        });
+        mFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        mLoginForm = findViewById(R.id.email_login_form);
+        mRegistrationForm = findViewById(R.id.registration_form);
+//        mForgotForm = findViewById(R.id.fo);
+
+        viewForm(FORM_LOGIN);
+
+    }
+
+    private void viewForm(String form) {
+        showProgress(false);
+        mLoginForm.setVisibility(View.GONE);
+        mRegistrationForm.setVisibility(View.GONE);
+
+        if(form == FORM_LOGIN){
+            mLoginForm.setVisibility(View.VISIBLE);
+        } else if(form == FORM_REGISTRATION){
+            mRegistrationForm.setVisibility(View.VISIBLE);
+        } else if(form == FORM_FORGOT){
+//            mLoginForm.setVisibility(View.VISIBLE);
+        } else {
+
+        }
     }
 
     private void populateAutoComplete() {
@@ -229,12 +273,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -250,7 +294,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -316,6 +360,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private String mEmail;
         private String mPassword;
+        private String mName;
+        private String mPhone;
 
         public UserLoginTask() {
         }
@@ -326,6 +372,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         public void signUp(){
+            Log.d(TAG, "signUp:called");
             mAuth.createUserWithEmailAndPassword(mEmail,mPassword)
                     .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -333,6 +380,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "createUserWithEmail:success");
+                                FirebaseUser user=mAuth.getCurrentUser();
+                                HashMap<String,Object> userProfile= new HashMap<>();
+                                userProfile.put("basic",user);
+                                userProfile.put("name","Ramesh");
+                                userProfile.put("phone","986420542");
+                                mDatabase.child("users").child(user.getUid()).setValue(userProfile);
+
                                 checkUserSession();
                             } else {
                                 // If sign in fails, display a message to the user.
@@ -357,7 +411,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                signUp();
+                                viewForm(FORM_REGISTRATION);
                             }
                         }
                     });
