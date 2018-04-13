@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="registration_label">
+        <item name="android:textSize">10sp</item>
+        <item name="android:color">@color/colorTextPrimary</item>
+        <item name="android:layout_marginTop">50dp</item>
+    </style>
 </resources>

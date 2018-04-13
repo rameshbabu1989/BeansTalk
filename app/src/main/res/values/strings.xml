@@ -1,14 +1,29 @@
 <resources>
     <string name="app_name">BeansTalk</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_registation">Registration</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password </string>
     <string name="prompt_name">Name </string>
     <string name="prompt_phone">Phone </string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_up">Confirm your Signup</string>
+    <string name="prompt_delivery_address">Delivery Address </string>
+    <string name="prompt_address_line1">Line 1</string>
+    <string name="prompt_address_line2">Line 2</string>
+    <string name="prompt_address_city">City</string>
+    <string name="prompt_address_state">State</string>
+    <string name="prompt_address_country">Country</string>
+    <string name="prompt_address_pincode">Pincode</string>
+    <string name="prompt_card_details">Card Details</string>
+    <string name="prompt_card_name">Card Holder Name</string>
+    <string name="prompt_card_number">Card Account Number</string>
+    <string name="prompt_card_cvv">Card cvv Number</string>
+
+
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_account">Create Account?</string>
+    <string name="action_sign_up">Sign up</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -17,4 +32,5 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="action_back_login">Back To SignIn</string>
 </resources>

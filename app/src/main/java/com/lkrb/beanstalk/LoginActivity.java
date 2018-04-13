@@ -82,10 +82,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private TextView mNavSignupScreen;
     private View mProgressView;
     private View mFormView;
     private View mLoginForm;
-    private View mRegistrationForm;
     private View mForgotForm;
 
 
@@ -115,6 +115,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        mNavSignupScreen = findViewById(R.id.nav_signup);
+        mNavSignupScreen.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LoginActivity.this, RegistrationActivity.class);
+                startActivity(i);
+            }
+        });
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -123,37 +132,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignUpButton = (Button) findViewById(R.id.email_sign_up_button);
-        mEmailSignUpButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAuthTask.signUp();
-            }
-        });
         mFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         mLoginForm = findViewById(R.id.email_login_form);
-        mRegistrationForm = findViewById(R.id.registration_form);
-//        mForgotForm = findViewById(R.id.fo);
 
-        viewForm(FORM_LOGIN);
-
-    }
-
-    private void viewForm(String form) {
-        showProgress(false);
-        mLoginForm.setVisibility(View.GONE);
-        mRegistrationForm.setVisibility(View.GONE);
-
-        if(form == FORM_LOGIN){
-            mLoginForm.setVisibility(View.VISIBLE);
-        } else if(form == FORM_REGISTRATION){
-            mRegistrationForm.setVisibility(View.VISIBLE);
-        } else if(form == FORM_FORGOT){
-//            mLoginForm.setVisibility(View.VISIBLE);
-        } else {
-
-        }
     }
 
     private void populateAutoComplete() {
@@ -360,8 +342,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private String mEmail;
         private String mPassword;
-        private String mName;
-        private String mPhone;
 
         public UserLoginTask() {
         }
@@ -371,33 +351,33 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPassword = password;
         }
 
-        public void signUp(){
-            Log.d(TAG, "signUp:called");
-            mAuth.createUserWithEmailAndPassword(mEmail,mPassword)
-                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "createUserWithEmail:success");
-                                FirebaseUser user=mAuth.getCurrentUser();
-                                HashMap<String,Object> userProfile= new HashMap<>();
-                                userProfile.put("basic",user);
-                                userProfile.put("name","Ramesh");
-                                userProfile.put("phone","986420542");
-                                mDatabase.child("users").child(user.getUid()).setValue(userProfile);
-
-                                checkUserSession();
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                                Log.i(TAG, "onComplete: fail");
-                            }
-                        }
-                    });
-        }
+//        public void signUp(){
+//            Log.d(TAG, "signUp:called");
+//            mAuth.createUserWithEmailAndPassword(mEmail,mPassword)
+//                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<AuthResult> task) {
+//                            if (task.isSuccessful()) {
+//                                // Sign in success, update UI with the signed-in user's information
+//                                Log.d(TAG, "createUserWithEmail:success");
+//                                FirebaseUser user=mAuth.getCurrentUser();
+//                                HashMap<String,Object> userProfile= new HashMap<>();
+//                                userProfile.put("basic",user);
+//                                userProfile.put("name","Ramesh");
+//                                userProfile.put("phone","986420542");
+//                                mDatabase.child("users").child(user.getUid()).setValue(userProfile);
+//
+//                                checkUserSession();
+//                            } else {
+//                                // If sign in fails, display a message to the user.
+//                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+//                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+//                                        Toast.LENGTH_SHORT).show();
+//                                Log.i(TAG, "onComplete: fail");
+//                            }
+//                        }
+//                    });
+//        }
 
         public void signIn(){
             mAuth.signInWithEmailAndPassword(mEmail, mPassword)
@@ -411,7 +391,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                viewForm(FORM_REGISTRATION);
+                                Toast.makeText(LoginActivity.this, "Fail to login...!",
+                                        Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -423,6 +404,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(i);
+                finish();
             }
         }
 
