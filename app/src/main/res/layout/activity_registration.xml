@@ -77,7 +77,7 @@ tools:context="com.lkrb.beanstalk.RegistrationActivity">
                     android:id="@+id/reg_password_conf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
+                    android:hint="@string/prompt_password_conf"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
@@ -191,7 +191,7 @@ tools:context="com.lkrb.beanstalk.RegistrationActivity">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_address_pincode"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>

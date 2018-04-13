@@ -98,7 +98,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.d(TAG, "signUp:called");
         final String email = mEmailView.getText().toString();
         final String password = mPasswordView.getText().toString();
-        final String passwordConf = mPasswordView.getText().toString();
+        final String passwordConf = mConfPasswordView.getText().toString();
 
         final String name = mNameView.getText().toString();
         final String phone = mPhoneView.getText().toString();
@@ -113,7 +113,8 @@ public class RegistrationActivity extends AppCompatActivity {
         final String holderName = mCardName.getText().toString();
         final String number = mCardNumber.getText().toString();
         final String cvv = mCardCvv.getText().toString();
-        if(password != passwordConf){
+        Log.i(TAG, "signUp: "+password+"---"+passwordConf);
+        if(!password.equals(passwordConf)){
             Toast.makeText(RegistrationActivity.this, "Passwords MisMatch",
                     Toast.LENGTH_SHORT).show();
         }
