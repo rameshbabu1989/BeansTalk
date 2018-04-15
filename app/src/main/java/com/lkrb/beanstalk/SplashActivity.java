@@ -9,7 +9,7 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashActivity extends AppCompatActivity {
-    private final int mSleepTime = 3000;
+    private final int mSleepTime = 2000;
     private FirebaseAuth mAuth;
 
     @Override
