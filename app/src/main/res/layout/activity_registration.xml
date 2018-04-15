@@ -193,6 +193,7 @@ tools:context="com.lkrb.beanstalk.RegistrationActivity">
                     android:hint="@string/prompt_address_pincode"
                     android:inputType="number"
                     android:maxLines="1"
+                    android:maxLength="6"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
