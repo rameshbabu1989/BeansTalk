@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    tools:context="com.lkrb.beanstalk.AddressActivity">
+
+    <TextView
+        style="@style/form_label_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/prompt_address_line1" />
+
+    <TextView
+        android:id="@+id/tv_address_line1"
+        style="@style/form_label_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        style="@style/form_label_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/prompt_address_line2" />
+
+    <TextView
+        android:id="@+id/tv_address_line2"
+        style="@style/form_label_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        style="@style/form_label_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/prompt_address_city" />
+
+    <TextView
+        android:id="@+id/tv_address_city"
+        style="@style/form_label_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        style="@style/form_label_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/prompt_address_state" />
+
+    <TextView
+        android:id="@+id/tv_address_state"
+        style="@style/form_label_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        style="@style/form_label_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/prompt_address_country" />
+
+    <TextView
+        android:id="@+id/tv_address_country"
+        style="@style/form_label_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        style="@style/form_label_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/prompt_address_pincode" />
+
+    <TextView
+        android:id="@+id/tv_address_pincode"
+        style="@style/form_label_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+</LinearLayout>

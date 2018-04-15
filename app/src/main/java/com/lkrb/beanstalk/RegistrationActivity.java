@@ -147,7 +147,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 userProfile.put("basic", user);
                                 userProfile.put("name", name);
                                 userProfile.put("phone", phone);
-                                userProfile.put("phone", email);
+                                userProfile.put("email", email);
                                 userProfile.put("address", address);
                                 userProfile.put("card", cardDetail);
                                 mDatabase.child("users").child(user.getUid()).setValue(userProfile);

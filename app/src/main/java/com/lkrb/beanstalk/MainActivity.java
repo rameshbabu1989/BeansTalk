@@ -1,8 +1,10 @@
 package com.lkrb.beanstalk;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,14 +14,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    private DatabaseReference mRef;
+    private static String TAG= "MainActivity >>> ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        mAuth = FirebaseAuth.getInstance();
+        user=mAuth.getCurrentUser();
+        mRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -40,6 +62,31 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        final View header = navigationView.getHeaderView(0);
+        final TextView nameText= (TextView) header.findViewById(R.id.user_name);
+        final TextView emailText= (TextView) header.findViewById(R.id.user_email);
+
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "onDataChange: "+dataSnapshot.getValue());
+                Customer customer=dataSnapshot.getValue(Customer.class);
+                Log.i(TAG, "onDataChange: "+customer.toString());
+                nameText.setText(customer.getName());
+                emailText.setText(user.getEmail().toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+//            TextView nameText= (TextView) header.findViewById(R.id.user_name);
+//            TextView emailText= (TextView) header.findViewById(R.id.user_email);
+//            nameText.setText(mDatabase.getRef().ger.toString());
+//            emailText.setText(user.getEmail().toString());
+
+
     }
 
     @Override
@@ -82,18 +129,31 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_profile) {
             // Handle the camera action
+            Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_address) {
-
+            Intent i = new Intent(MainActivity.this, AddressActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_card) {
-
+            Intent i = new Intent(MainActivity.this, CardActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_orders) {
 
         } else if (id == R.id.nav_logout) {
-
+            mAuth.signOut();
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(i);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 }
