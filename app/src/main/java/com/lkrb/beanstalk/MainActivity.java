@@ -138,7 +138,8 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(MainActivity.this, CardActivity.class);
             startActivity(i);
         } else if (id == R.id.nav_orders) {
-
+            Intent i = new Intent(MainActivity.this, ChatActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_logout) {
             mAuth.signOut();
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
