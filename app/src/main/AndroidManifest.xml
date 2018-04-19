@@ -49,7 +49,10 @@
             android:name=".AddressActivity"
             android:label="@string/title_activity_address"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".ChatActivity">
+        <activity
+            android:name=".ChatActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity" >
 
         </activity>
     </application>
