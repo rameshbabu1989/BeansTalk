@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -126,6 +127,30 @@ public class ChatActivity extends AppCompatActivity implements AIListener{
             }
         });
 
+        addBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                ImageView fab_img = (ImageView)findViewById(R.id.fab_img);
+                Bitmap img = BitmapFactory.decodeResource(getResources(),R.drawable.ic_send_white_24dp);
+                Bitmap img1 = BitmapFactory.decodeResource(getResources(),R.drawable.ic_mic_white_24dp);
+
+                switch(motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // PRESSED
+                        editText.setHint("Listening...");
+                        ImageViewAnimatedChange(ChatActivity.this,fab_img,img);
+                        aiService.startListening();
+                        return true; // if you want to handle the touch event
+                    case MotionEvent.ACTION_UP:
+                        // RELEASED
+                        editText.setHint("Type a Message");
+                        ImageViewAnimatedChange(ChatActivity.this,fab_img,img1);
+                        aiService.stopListening();
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        });
 
 
         editText.addTextChangedListener(new TextWatcher() {
